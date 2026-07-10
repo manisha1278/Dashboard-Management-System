@@ -1,0 +1,131 @@
+
+
+.dialog-container{
+
+    padding:12px 8px;
+
+}
+
+
+
+.dialog-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:8px 24px;
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:600;
+
+    color:#1F2937;
+
+}
+
+.title-icon{
+
+    color:#1565C0;
+
+    width:28px;
+
+    height:28px;
+
+    font-size:28px;
+
+}
+
+
+.dialog-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    padding:16px 24px 20px !important;
+
+}
+
+
+.dialog-field{
+
+    width:100%;
+
+}
+
+.dialog-field .mat-mdc-text-field-wrapper{
+
+    border-radius:14px;
+
+}
+
+
+
+.dialog-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    padding:16px 24px 12px;
+
+}
+
+
+
+.cancel-btn{
+
+    height:42px;
+
+    min-width:110px;
+
+    border-radius:22px !important;
+
+    font-weight:600;
+
+}
+
+.save-btn{
+
+    height:42px;
+
+    min-width:120px;
+
+    border-radius:22px !important;
+
+    font-weight:600;
+
+    box-shadow:none !important;
+
+}
+
+.save-btn mat-icon{
+
+    margin-right:6px;
+
+}
+
+
+
+.cancel-btn:hover{
+
+    background:#F5F7FB;
+
+}
+
+.save-btn:hover{
+
+    transform:translateY(-1px);
+
+    transition:.2s;
+
+}

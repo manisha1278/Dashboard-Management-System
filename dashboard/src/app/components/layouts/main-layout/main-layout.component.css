@@ -1,0 +1,25 @@
+.layout{
+
+    width:100vw;
+    height:100vh;
+
+}
+
+.main-content{
+
+    margin-left:60px;
+
+    height:100%;
+    width:calc(100vw - 60px);
+    
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+router-outlet{
+
+    display:none;
+
+}

@@ -1,0 +1,42 @@
+<div class="sidebar">
+
+    
+
+    <button
+        mat-icon-button
+        matTooltip="Dashboard"
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact:true}">
+
+        <mat-icon>dashboard</mat-icon>
+
+    </button>
+
+   
+@if (authService.isAdmin()) {
+    <button
+        mat-icon-button
+        matTooltip="Users"
+        routerLink="/user"
+        routerLinkActive="active">
+
+        <mat-icon>groups</mat-icon>
+
+    </button>
+
+}
+    <div class="sidebar-bottom">
+
+        <button
+            mat-icon-button
+            matTooltip="Logout"
+            (click)="logout()">
+
+            <mat-icon>logout</mat-icon>
+
+        </button>
+
+    </div>
+
+</div>

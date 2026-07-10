@@ -1,0 +1,164 @@
+:host{
+
+    display:block;
+    height:100%;
+}
+
+.tree-header{
+
+    padding:22px 24px;
+
+    border-bottom:1px solid #edf2f7;
+
+    background:#fafcff;
+
+}
+
+.header-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.header-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.header-title h2{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#1f2937;
+
+}
+
+.header-title p{
+
+    margin-top:4px;
+
+    color:#6b7280;
+
+    font-size:14px;
+
+}
+
+.search-container{
+
+    padding:18px;
+
+}
+
+.search-field{
+
+    width:100%;
+
+}
+
+.tree-content{
+
+    flex:1;
+
+    overflow:auto;
+
+    padding:12px;
+
+}
+
+:host ::ng-deep .p-tree{
+
+    border:none;
+
+    background:transparent;
+
+}
+:host ::ng-deep .p-tree-node-label{
+
+    font-size:15px;
+
+    color:#374151;
+
+}
+
+:host ::ng-deep .p-tree-node-content{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 14px;
+
+    border-radius:12px;
+
+    margin:4px 0;
+
+    transition:all .25s ease;
+
+}
+
+:host ::ng-deep .p-tree-node-content:hover{
+
+    background:#eff6ff;
+
+}
+
+:host ::ng-deep .p-tree-node-content:hover .p-tree-node-label {
+    color: #1976d2 !important;
+}
+
+:host ::ng-deep .p-tree-toggler{
+
+    color:#6b7280;
+
+    transition:.2s;
+
+}
+
+:host ::ng-deep .p-tree-toggler:hover{
+
+    color:#2563eb;
+
+}
+
+:host ::ng-deep .p-tree-node-content.p-tree-node-selected{
+
+    background:#2563eb !important;
+
+    color:white;
+
+}
+
+:host ::ng-deep .p-tree-node-content.p-tree-node-selected
+.p-tree-node-label{
+
+    color:white !important;
+
+    font-weight:600;
+
+}
+

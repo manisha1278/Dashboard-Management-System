@@ -1,0 +1,128 @@
+<mat-toolbar class="custom-header">
+
+  @if (isDashboard) {
+
+    <span class="page-title">
+      Dashboard Management
+    </span>
+
+    <mat-form-field
+      appearance="outline"
+      class="dashboard-select">
+
+      <mat-select
+        [ngModel]="selectedDashboard"
+        (selectionChange)="onDashboardSelected($event.value)">
+
+        @for (dashboard of dashboards; track dashboard.id) {
+
+          <mat-option [value]="dashboard">
+
+            {{ dashboard.name }}
+
+          </mat-option>
+
+        }
+
+      </mat-select>
+
+      <mat-icon matSuffix>dashboard</mat-icon>
+
+    </mat-form-field>
+
+    <span class="spacer"></span>
+
+    <div class="button-container">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="header-btn"
+        (click)="openWidgetDialog()">
+
+        <mat-icon>add</mat-icon>
+
+        Add Widget
+
+      </button>
+@if(authService.isAdmin()) {
+      <button
+        mat-raised-button
+        color="primary"
+        class="header-btn"
+        (click)="openDashboardDialog()">
+
+        <mat-icon>dashboard_customize</mat-icon>
+
+        Add Dashboard
+
+      </button>
+    }
+
+    @if(authService.isAdmin()) {
+      <button
+        mat-stroked-button
+        class="header-btn"
+        (click)="openEditDashboardDialog()"
+        [disabled]="!selectedDashboard">
+
+        <mat-icon>edit</mat-icon>
+
+        Edit
+
+      </button>
+    }
+
+     @if(authService.isAdmin()) {
+      <button
+        mat-stroked-button
+        color="warn"
+        class="header-btn"
+        (click)="openDeleteDashboard()"
+        [disabled]="!selectedDashboard">
+
+        <mat-icon>delete</mat-icon>
+
+        Delete
+
+      </button>
+    }
+    </div>
+
+  }
+
+  @if (isUsers) {
+
+    <span class="spacer"></span>
+
+    <div class="button-container">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="header-btn"
+        (click)="openAddUserDialog()">
+
+        <mat-icon>person_add</mat-icon>
+
+        Add User
+
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="header-btn"
+        (click)="openAddUserTypeDialog()">
+
+        <mat-icon>group_add</mat-icon>
+
+        Add User Type
+
+      </button>
+
+    </div>
+
+  }
+
+</mat-toolbar>

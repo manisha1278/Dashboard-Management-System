@@ -1,0 +1,155 @@
+<div class="dialog-container">
+
+
+
+    <h2 mat-dialog-title class="dialog-title">
+
+        <mat-icon class="title-icon">
+
+            {{ isEditMode ? 'edit_note' : 'add_chart' }}
+
+        </mat-icon>
+
+        {{ isEditMode ? 'Edit Widget' : 'Create Widget' }}
+
+    </h2>
+
+
+
+    <mat-dialog-content class="dialog-content">
+
+        
+
+        <mat-form-field
+            appearance="outline"
+            class="dialog-field">
+
+            <mat-label>
+
+                Widget Name
+
+            </mat-label>
+
+            <input
+                matInput
+                [(ngModel)]="widgetName"
+                placeholder="Enter widget name">
+
+            <mat-icon matSuffix>
+
+                dashboard_customize
+
+            </mat-icon>
+
+        </mat-form-field>
+
+
+        
+
+        <mat-form-field
+            appearance="outline"
+            class="dialog-field">
+
+            <mat-label>
+
+                Chart Type
+
+            </mat-label>
+
+            <mat-select [(value)]="chartType">
+
+                <mat-option value="Line Chart">
+
+                    Line Chart
+
+                </mat-option>
+
+                <mat-option value="Bar Chart">
+
+                    Bar Chart
+
+                </mat-option>
+
+                <mat-option value="Pie Chart">
+
+                    Pie Chart
+
+                </mat-option>
+
+            </mat-select>
+
+            <mat-icon matSuffix>
+
+                insert_chart
+
+            </mat-icon>
+
+        </mat-form-field>
+
+
+
+
+        <mat-form-field
+            appearance="outline"
+            class="dialog-field">
+
+            <mat-label>
+
+                Dashboard
+
+            </mat-label>
+
+            <mat-select [(value)]="dashboardId">
+
+                <mat-option
+                    *ngFor="let dashboard of dashboards"
+                    [value]="dashboard.id">
+
+                    {{ dashboard.name }}
+
+                </mat-option>
+
+            </mat-select>
+
+            <mat-icon matSuffix>
+
+                dashboard
+
+            </mat-icon>
+
+        </mat-form-field>
+
+    </mat-dialog-content>
+
+    
+
+    <mat-dialog-actions class="dialog-actions">
+
+        <button
+            mat-stroked-button
+            class="cancel-btn"
+            (click)="cancel()">
+
+            Cancel
+
+        </button>
+
+        <button
+            mat-raised-button
+            color="primary"
+            class="save-btn"
+            (click)="save()">
+
+            <mat-icon>
+
+                {{ isEditMode ? 'save' : 'add' }}
+
+            </mat-icon>
+
+            {{ isEditMode ? 'Update' : 'Create' }}
+
+        </button>
+
+    </mat-dialog-actions>
+
+</div>

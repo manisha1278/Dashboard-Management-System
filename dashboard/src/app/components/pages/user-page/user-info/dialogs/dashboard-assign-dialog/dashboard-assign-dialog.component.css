@@ -1,0 +1,15 @@
+mat-dialog-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    min-width:420px;
+
+    max-height:450px;
+
+    overflow:auto;
+
+}

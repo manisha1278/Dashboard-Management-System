@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>
+
+    {{ data ? 'Edit User Type' : 'Add User Type' }}
+
+</h2>
+
+<mat-dialog-content>
+
+    <form [formGroup]="userTypeForm">
+
+        <mat-form-field
+            appearance="outline"
+            class="full-width">
+
+            <mat-label>User Type Name</mat-label>
+
+            <input
+                matInput
+                maxlength="50"
+                formControlName="name">
+
+            @if(userTypeForm.get('name')?.hasError('required')){
+
+                <mat-error>
+
+                    User Type Name is required.
+
+                </mat-error>
+
+            }
+
+            @if(userTypeForm.get('name')?.hasError('maxlength')){
+
+                <mat-error>
+
+                    Maximum 50 characters allowed.
+
+                </mat-error>
+
+            }
+
+        </mat-form-field>
+
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <button
+        mat-button
+        type="button"
+        (click)="cancel()">
+
+        Cancel
+
+    </button>
+
+    <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="save()">
+
+        Save
+
+    </button>
+
+</mat-dialog-actions>

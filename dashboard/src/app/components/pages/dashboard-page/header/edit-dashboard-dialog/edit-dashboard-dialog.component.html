@@ -1,0 +1,77 @@
+<div class="dialog-container">
+
+
+
+    <h2 mat-dialog-title class="dialog-title">
+
+        <mat-icon class="title-icon">
+
+            edit_note
+
+        </mat-icon>
+
+        Edit Dashboard
+
+    </h2>
+
+
+
+    <mat-dialog-content class="dialog-content">
+
+        <mat-form-field
+            appearance="outline"
+            class="dashboard-field">
+
+            <mat-label>
+
+                Dashboard Name
+
+            </mat-label>
+
+            <input
+                matInput
+                [(ngModel)]="dashboardName"
+                placeholder="Enter dashboard name">
+
+            <mat-icon matSuffix>
+
+                dashboard_customize
+
+            </mat-icon>
+
+        </mat-form-field>
+
+    </mat-dialog-content>
+
+
+
+    <mat-dialog-actions class="dialog-actions">
+
+        <button
+            mat-stroked-button
+            class="cancel-btn"
+            (click)="cancel()">
+
+            Cancel
+
+        </button>
+
+        <button
+            mat-raised-button
+            color="primary"
+            class="update-btn"
+            (click)="save()">
+
+            <mat-icon>
+
+                save
+
+            </mat-icon>
+
+            Update
+
+        </button>
+
+    </mat-dialog-actions>
+
+</div>

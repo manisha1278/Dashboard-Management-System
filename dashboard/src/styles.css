@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+.modern-dialog .mat-mdc-dialog-container{
+
+    border-radius:20px !important;
+
+    overflow:hidden;
+
+    box-shadow:0 18px 45px rgba(15,23,42,.18);
+
+}
+.mat-mdc-select-panel{
+
+    border-radius:12px !important;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.15) !important;
+
+    padding:8px 0;
+
+}
+
+.mat-mdc-option{
+
+    min-height:44px;
+
+    font-size:15px;
+
+}
+
+.mat-mdc-option:hover{
+
+    background:#F5F7FB !important;
+
+}
+
+.mat-mdc-option.mdc-list-item--selected{
+
+    background:#E8F1FF !important;
+
+    color:#1565C0 !important;
+
+}
+

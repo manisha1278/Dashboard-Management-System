@@ -1,0 +1,35 @@
+<div class="tree-container">
+
+    <div class="tree-header">
+
+        <div class="header-title">
+
+            <div class="header-icon">
+                <mat-icon>groups</mat-icon>
+            </div>
+
+            <div>
+
+                <h2>User Management</h2>
+
+                <p>User Types & Users</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+    <div class="tree-content">
+
+        <p-tree
+            [value]="(userTreeNodes$ | async) ?? []"
+            selectionMode="single"
+            (onNodeSelect)="onNodeSelect($event)">
+        </p-tree>
+
+    </div>
+
+</div>

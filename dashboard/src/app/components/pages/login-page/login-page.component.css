@@ -1,0 +1,134 @@
+
+:host{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+.login-page{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+
+    overflow:hidden;
+
+}
+
+
+.left-panel{
+
+    flex:1;
+
+    background:linear-gradient(135deg,#1565C0,#0D47A1);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+}
+
+.branding{
+
+    max-width:800px;
+
+}
+
+.branding h1{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.branding h3{
+
+    font-weight:400;
+
+    margin-bottom:20px;
+
+}
+
+.branding p{
+
+    line-height:1.7;
+
+    margin-bottom:40px;
+
+    opacity:.9;
+
+}
+
+.features{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+.feature{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    font-size:20px;
+
+}
+
+.feature mat-icon{
+
+    font-size:32px;
+
+    width:32px;
+
+    height:32px;
+
+}
+
+.right-panel{
+
+    flex:1;
+
+    background:#f5f7fb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .left-panel{
+
+        display:none;
+
+    }
+
+    .right-panel{
+
+        flex:1;
+
+    }
+
+}
