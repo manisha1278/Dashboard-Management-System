@@ -7,14 +7,16 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
-builder.Services.AddOpenApi();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -64,13 +66,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserDashboardService, UserDashboardAssignmentService>();
 builder.Services.AddScoped<DashboardService>();
 
+
+
 var app = builder.Build();
 
-// Configure HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+
 
 app.UseHttpsRedirection();
 
@@ -93,9 +93,23 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 // Seed Database
+/*
 using (var scope = app.Services.CreateScope())
 {
     var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
+    await seedService.SeedAsync();
+}
+*/
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+
+    var seedService = services.GetRequiredService<SeedService>();
+
     await seedService.SeedAsync();
 }
 
