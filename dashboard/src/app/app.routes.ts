@@ -5,30 +5,31 @@ import { UserPageComponent } from './components/pages/user-page/user-page.compon
 import { authGuard } from './guards/auth-guard';
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
 import { adminGuard } from './guards/admin-guard';
+import { guestGuard } from './guards/guest-guard';
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
-    {path:'login', component: LoginPageComponent},
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginPageComponent ,canActivate: [guestGuard]},
     {
-    path:'',
-    component:MainLayoutComponent,
-    canActivate:[authGuard],
+        path: '',
+        component: MainLayoutComponent,
+        canActivate: [authGuard],
 
-    children:[
+        children: [
 
-        {
-            path:'dashboard',
-            component:DashboardPageComponent
-        },
+            {
+                path: 'dashboard',
+                component: DashboardPageComponent
+            },
 
-        {
-            path:'user',
-            component:UserPageComponent,
-            canActivate: [adminGuard]
-        }
+            {
+                path: 'user',
+                component: UserPageComponent,
+                canActivate: [adminGuard]
+            }
 
-    ]
-}
-    
+        ]
+    }
+
 
 ];

@@ -27,37 +27,31 @@ export class UserDashboardService {
     return this.userDashboardsSubject.value;
 
   }
-load(userId: string): Observable<UserDashboard[]> {
+  
+  load(userId: string): Observable<UserDashboard[]> {
 
-  return this.userDashboardApiService
-    .getUserDashboards(userId)
-    .pipe(
-
-      tap(dashboards => {
-
-        this.userDashboardsSubject.next(dashboards);
-
-      })
-
-    );
-
-}
+    return this.userDashboardApiService
+      .getUserDashboards(userId)
+      .pipe(
+        tap(dashboards => {
+          this.userDashboardsSubject.next(dashboards);
+        })
+      );
+  }
 
   assignDashboards(
-  userId: string,
-  dashboardIds: string[]
-): Observable<void> {
+    userId: string,
+    dashboardIds: string[]
+  ): Observable<void> {
 
-  return this.userDashboardApiService.assignDashboards(
-    userId,
-    dashboardIds
-  );
-}
+    return this.userDashboardApiService.assignDashboards(
+      userId,
+      dashboardIds
+    );
+  }
 
   clear(): void {
-
     this.userDashboardsSubject.next([]);
-
   }
 
 }

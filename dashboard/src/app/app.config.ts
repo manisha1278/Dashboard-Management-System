@@ -6,6 +6,7 @@ import{provideHttpClient, withInterceptors} from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { loaderInterceptor } from './interceptors/loader-interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideCharts(withDefaultRegisterables()),
 
     provideHttpClient(
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor,loaderInterceptor])
     ),
 
     providePrimeNG({

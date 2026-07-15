@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -44,93 +44,102 @@ export class UserDialogComponent {
 
   readonly userTypes: UserType[];
 
-readonly isSystemUser: boolean;
-
+  readonly isSystemUser: boolean;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<UserDialogComponent>,
     private userTypeService: UserTypeService,
-  
+
     @Inject(MAT_DIALOG_DATA)
     public data: User | null
   ) {
 
-    this.userTypes =
-    this.userTypeService
-        .getCurrentUserTypes()
-        .filter(userType => !userType.isSystem);
+    this.isSystemUser = data?.isSystem ?? false;
 
-   this.isSystemUser = data?.isSystem ?? false;
+    const allUserTypes = this.userTypeService.getCurrentUserTypes();
 
-   this.form = this.fb.group({
+    if (this.isSystemUser) {
 
-  username: [
-    data?.username ?? '',
-    Validators.required
-  ],
+      // Editing Administrator
+      // Show all user types so Administrator can be displayed.
+      this.userTypes = allUserTypes;
 
-  password: [
-    '',
-    Validators.required
-  ],
+    } else {
 
-  fullName: [
-    data?.fullName ?? '',
-    Validators.required
-  ],
+      // Add User or Edit Normal User
+      // Hide Administrator user type.
+      this.userTypes = allUserTypes.filter(userType => !userType.isSystem);
 
-  email: [
-    data?.email ?? '',
-    [
-      Validators.required,
-      Validators.email
-    ]
-  ],
+    }
 
-  contact: [
-    data?.contact ?? '',
-    Validators.required
-  ],
+    this.form = this.fb.group({
 
-  userTypeId: [
-    data?.userTypeId ?? '',
-    Validators.required
-  ]
+      username: [
+        data?.username ?? '',
+        Validators.required
+      ],
 
-});
+      password: [
+        '',
+        Validators.required
+      ],
 
-// If editing an existing user,
-// password is not required.
-if (data) {
+      fullName: [
+        data?.fullName ?? '',
+        Validators.required
+      ],
 
-  this.form.get('password')?.clearValidators();
+      email: [
+        data?.email ?? '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
 
-  this.form.get('password')?.updateValueAndValidity();
+      contact: [
+        data?.contact ?? '',
+        Validators.required
+      ],
 
-}
-    
-    if(this.isSystemUser) {
+      userTypeId: [
+        data?.userTypeId ?? '',
+        Validators.required
+      ]
+
+    });
+
+    // Editing existing user
+    if (data) {
+
+      this.form.get('password')?.clearValidators();
+      this.form.get('password')?.updateValueAndValidity();
+
+    }
+
+    // Prevent editing Administrator details
+    if (this.isSystemUser) {
 
       this.form.get('username')?.disable();
       this.form.get('fullName')?.disable();
       this.form.get('userTypeId')?.disable();
+
     }
+
   }
-  
 
   save(): void {
 
     if (this.form.invalid) {
 
       this.form.markAllAsTouched();
-
       return;
 
     }
 
-    this.dialogRef.close(this.form.getRawValue()); //getRawValue() is used to get the values of both enabled and disabled controls as well
-   
+    this.dialogRef.close(this.form.getRawValue());
+
   }
 
   cancel(): void {

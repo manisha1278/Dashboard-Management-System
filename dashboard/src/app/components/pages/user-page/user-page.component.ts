@@ -13,15 +13,15 @@ import { UserService } from '../../../services/user.service';
 })
 export class UserPageComponent implements OnInit {
   constructor(private readonly userService: UserService,
-      private readonly userTypeService: UserTypeService) {}
-  
- ngOnInit(): void {
+    private readonly userTypeService: UserTypeService) { }
+
+  ngOnInit(): void {
 
     this.userTypeService.load();
 
     this.userService.load();
 
   }
-  
 
- }
+
+}
