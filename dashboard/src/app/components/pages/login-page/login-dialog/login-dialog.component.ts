@@ -6,22 +6,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Login } from '../../../../models/login';
-import{MatSnackBarModule} from '@angular/material/snack-bar';
-import{MatSnackBar} from '@angular/material/snack-bar';
+import { LoginManager } from '../../../../services/managers/login-manager';
 @Component({
   selector: 'app-login-dialog',
-  imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, CommonModule, MatCardModule, MatIconModule,MatSnackBarModule], 
+  imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, CommonModule, MatCardModule, MatIconModule], 
   templateUrl: './login-dialog.component.html',
   styleUrl: './login-dialog.component.css',
 })
 export class LoginDialogComponent {
   loginForm: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar) {
+  constructor( private fb: FormBuilder,private loginManager: LoginManager ) {
 
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
@@ -36,30 +33,10 @@ export class LoginDialogComponent {
       return;
     }
 
- 
-
     const loginDto: Login = this.loginForm.getRawValue();
+    this.loginManager.login(loginDto);
     
-    this.authService
-      .login(loginDto)
-      .subscribe({
-
-        next: response => {
-
-          this.authService.loginSuccess(response);
-         
-
-          this.router.navigate(['/dashboard']);
-
-        },
-
-        error: () => {
-
-          this.snackBar.open('Invalid username or password.', 'Close', { duration: 3000 });
-
-        }
-
-      });
+    
 
   }
 }

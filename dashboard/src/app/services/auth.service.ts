@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { LoginResponse } from '../models/login-response';
-import{Login} from '../models/login';
+import {Login} from '../models/login';
+import {tap} from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,10 +12,18 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data:Login){
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, data);
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, data) .pipe(
+
+            tap(response => {
+
+                this.storeSession(response);
+
+            })
+
+        );
   }
 
- loginSuccess(response: LoginResponse): void {
+  storeSession(response: LoginResponse): void {       //storing token and user info in local storage
 
   localStorage.setItem('token', response.token);
 
