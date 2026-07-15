@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Dashboard } from '../models/dashboard';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Widget } from '../models/widgets';
+import { Widget } from '../models/widget';
 
 @Injectable({
   providedIn: 'root',

@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogModule,MatDialogRef} from '@angular/material/
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Widget } from '../../../../../models/widgets';
+import { Widget } from '../../../../../models/widget';
 import{MatIconModule} from '@angular/material/icon';
 @Component({
   selector: 'app-widget-dialog',

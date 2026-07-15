@@ -15,7 +15,7 @@ import {
   ChartOptions
 } from 'chart.js';
 
-import { Widget } from '../../../../../models/widgets';
+import { Widget } from '../../../../../models/widget';
 
 @Component({
   selector: 'app-line-chart',

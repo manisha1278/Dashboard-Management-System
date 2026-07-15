@@ -4,7 +4,7 @@ import {
   ChartConfiguration,
   ChartOptions
 } from 'chart.js';
-import { Widget } from '../../../../../models/widgets';
+import { Widget } from '../../../../../models/widget';
 
 @Component({
   selector: 'app-bar-chart',

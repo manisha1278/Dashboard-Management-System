@@ -1,137 +1,104 @@
 import { Component, OnInit } from '@angular/core';
-import { Widget } from '../../../../models/widgets';
-import { DashboardService } from '../../../../services/dashboard.service';
-import{CommonModule} from '@angular/common';
-import{MatCardModule} from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+
 import { Dashboard } from '../../../../models/dashboard';
+import { Widget } from '../../../../models/widget';
+
+import { DashboardService } from '../../../../services/dashboard.service';
+import { WidgetManager } from '../../../../services/managers/widget-manager';
+
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
+
 import { WidgetDialogComponent } from '../header/widget-dialog/widget-dialog.component';
-import{WidgetApiService} from '../../../../services/widget-api.service';
-//import { DashboardApiService } from '../../../../services/dashboard-api.service';
 
 @Component({
   selector: 'app-widget-view',
   standalone: true,
-  imports: [CommonModule, MatCardModule, LineChartComponent, BarChartComponent, PieChartComponent,MatMenuModule, MatButtonModule, MatIconModule],
-  
+  imports: [
+    CommonModule,
+    MatCardModule,
+    LineChartComponent,
+    BarChartComponent,
+    PieChartComponent,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './widget-view.component.html',
   styleUrl: './widget-view.component.css',
 })
 export class WidgetViewComponent implements OnInit {
-  selectedDashboard:Dashboard | null = null;
-  widgets:Widget[] = [];
-  //allWidgets:Widget[] = [];
-  constructor(private dashboardService: DashboardService,private dialog:MatDialog,private widgetApiService: WidgetApiService){}
 
-   ngOnInit(): void {
-    
+  selectedDashboard: Dashboard | null = null;
 
-  
+  widgets: Widget[] = [];
 
-  combineLatest([
-    this.dashboardService.selectedDashboard,
-    this.dashboardService.widgets
-  ])
-  .subscribe(([dashboard, widgets]) => {
+  constructor(
+    private dashboardService: DashboardService,
+    private dialog: MatDialog,
+    private widgetManager: WidgetManager
+  ) { }
 
-    this.selectedDashboard = dashboard;
+  ngOnInit(): void {
 
-    //this.widgets = widgets.filter(
-     // widget => widget.dashboardId === dashboard?.id
-    //);
+    combineLatest([
+      this.dashboardService.selectedDashboard,
+      this.dashboardService.widgets
+    ])
+    .subscribe(([dashboard, widgets]) => {
 
-   this.widgets = widgets;
+      this.selectedDashboard = dashboard;
 
-  });
+      this.widgets = widgets;
 
-}
-
-editWidget(widget: Widget) {
-  const dialogRef = this.dialog.open(WidgetDialogComponent, {
-    width:'560px',
-
-    panelClass:'modern-dialog',
-
-    disableClose:true,
-    data: { 
-      dashboards: this.dashboardService.dashboards.value,
-     widget: widget 
-    }
     });
 
- dialogRef.afterClosed()
-.subscribe(updatedWidget => {
+  }
 
-  if (!updatedWidget) return;
+  editWidget(widget: Widget): void {
 
-  this.widgetApiService
-    .updateWidget(updatedWidget.id, updatedWidget)
-    .subscribe({
+    const dialogRef = this.dialog.open(
+      WidgetDialogComponent,
+      {
+        width: '560px',
+        panelClass: 'modern-dialog',
+        disableClose: true,
+        data: {
+          dashboards: this.dashboardService.dashboards.value,
+          widget: widget
+        }
+      }
+    );
 
-      next: (savedWidget) => {
-  console.log('Saved Widget:', savedWidget);//
+    dialogRef.afterClosed()
+      .subscribe((updatedWidget: Widget) => {
 
-        const widgets =
-          this.dashboardService.widgets.value;
+        if (!updatedWidget) {
 
-          console.log('Before Update:', widgets);//
-
-
-        const index =
-          widgets.findIndex(
-            w => w.id === savedWidget.id
-          );
-console.log('Index:', index);//
-        if (index !== -1) {
-
-          widgets[index] = savedWidget;
-
-          this.dashboardService.widgets.next(
-            [...widgets]
-          );
+          return;
 
         }
 
-      },
+        this.widgetManager.updateWidget(updatedWidget);
 
-      error: (err) => {
-        console.error(err);
-      }
+      });
 
-    });
+  }
 
-});
+  deleteWidget(widget: Widget): void {
 
-}
-deleteWidget(widget: Widget) {
+    this.widgetManager.deleteWidget(widget.id);
 
-  this.widgetApiService
-    .deleteWidget(widget.id)
-    .subscribe({
-
-      next: () => {
-
-        const updatedWidgets =
-          this.dashboardService.widgets.value
-            .filter(w => w.id !== widget.id);
-
-        this.dashboardService.widgets.next(updatedWidgets);
-
-      },
-
-      error: (err) => {
-        console.error(err);
-      }
-
-    });
+  }
 
 }
-}
-

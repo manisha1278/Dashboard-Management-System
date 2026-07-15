@@ -5,9 +5,9 @@ import { EditDashboardDialogComponent } from '../../../pages/dashboard-page/head
 import { WidgetDialogComponent } from '../../../pages/dashboard-page/header/widget-dialog/widget-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardService } from '../../../../services/dashboard.service';
-import { WidgetApiService } from '../../../../services/widget-api.service';
-import { DashboardApiService } from '../../../../services/dashboard-api.service';
-import{Widget} from '../../../../models/widgets';
+
+import{ DashboardManager } from '../../../../services/managers/dashboard-manager';
+import{Widget} from '../../../../models/widget';
 import { ChangeDetectorRef } from '@angular/core';
 import {  MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,7 @@ import{UserDialogComponent} from '../../user-page/user-info/dialogs/user-dialog/
 import{UserService} from '../../../../services/user.service';
 import{CreateUserDto} from '../../../../models/createUserDto';
 import{AuthService} from '../../../../services/auth.service';
+import{WidgetManager} from '../../../../services/managers/widget-manager';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -49,13 +50,14 @@ export class HeaderComponent implements OnInit {
 constructor(
     private dialog: MatDialog,
     private dashboardService: DashboardService,
-    private dashboardApiService: DashboardApiService,
-    private widgetApiService: WidgetApiService,
+    private dashboardManager: DashboardManager,
+  
     private router: Router,
     private readonly userTypeService: UserTypeService,
     private readonly userService: UserService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    public readonly authService: AuthService
+    public readonly authService: AuthService,
+    private readonly widgetManager: WidgetManager
 
   ) {}
 
@@ -79,146 +81,51 @@ get widgets() {
 
   ngOnInit(): void {
 
-    this.loadDashboards();
+    this.dashboardManager.loadDashboards();
 
    
 }
 
  
-loadDashboards(): void {
 
-  this.dashboardApiService.getDashboards().subscribe({
-
-    next: (dashboards) => {
-
-      this.dashboardService.dashboards.next(dashboards);
-
-      const currentId = this.dashboardService.selectedDashboard.value?.id;
-
-      const selectedDashboard = dashboards.find(
-        d => d.id === currentId
-      );
-
-      if (selectedDashboard) {
-
-        this.dashboardService.selectedDashboard.next(
-          selectedDashboard
-        );
-
-      } else if (dashboards.length > 0) {
-
-        this.dashboardService.selectedDashboard.next(
-          dashboards[0]
-        );
-
-      }
-     if (this.selectedDashboard) {
-    this.onDashboardChange();
-}
-
-    },
-
-    error: (error) => {
-
-      console.error(
-        'Error loading dashboards',
-        error
-      );
-
-    }
-
-  });
-
-}
 
 onDashboardSelected(dashboard: Dashboard): void {
 
     
-    this.dashboardService.selectedDashboard.next(dashboard);
-
-    
-    this.onDashboardChange();
-}
-
-onDashboardChange() {
-
-    const id = this.selectedDashboard?.id;
-
-    if (!id) {
-        this.dashboardService.widgets.next([]);
-        return;
-    }
-
-    this.dashboardApiService
-        .getWidgets(id)
-        .subscribe(widgets => {
-
-            this.dashboardService.widgets.next(widgets);
-
-        });
+    this.dashboardManager.selectDashboard(dashboard);
 
 }
+
+
 
 
 
 openDashboardDialog(): void {
 
-    const dialogRef = this.dialog.open(
-      DashboardDialogComponent,
-      {
-        width:'480px',
+  const dialogRef = this.dialog.open(
+    DashboardDialogComponent,
+    {
+      width: '480px',
+      panelClass: 'modern-dialog'
+    }
+  );
 
-    panelClass:'modern-dialog'
+  dialogRef.afterClosed()
+    .subscribe((dashboardName: string) => {
+
+      if (!dashboardName) {
+        return;
       }
-    );
 
-    dialogRef.afterClosed()
-      .subscribe((dashboardName: string) => {
+      this.dashboardManager.createDashboard(
+        dashboardName
+      );
 
-        if (!dashboardName) {
-          return;
-        }
+      this.changeDetectorRef.detectChanges();
 
-        this.dashboardApiService
-          .addDashboard(dashboardName)
-          .subscribe({
+    });
 
-            next: (newDashboard) => {
-
-
-              this.dashboardService.dashboards.next([
-  ...this.dashboardService.dashboards.value,
-  newDashboard
-]);
-
-             // this.dashboardService.dashboards = [
- // ...this.dashboardService.dashboards,newDashboard];
-
-  this.dashboardService.selectedDashboard.next(
-  newDashboard
-);
-
-this.onDashboardChange();
-
-this.changeDetectorRef.detectChanges();
-  
-
-            },
-
-            error: (error) => {
-
-              console.error(
-                'Error creating dashboard',
-                error
-              );
-
-            }
-
-          });
-
-      });
-
-  }
+}
 
 openEditDashboardDialog(): void {
   
@@ -248,62 +155,14 @@ openEditDashboardDialog(): void {
             return;
           }
   
-          this.dashboardApiService
-            .updateDashboard(
-              this.selectedDashboard!.id,
-              updatedName
-            )
-            .subscribe({
-              
-             
-              next: (updatedDashboard) => {
-  
-    const dashboards =
-      this.dashboardService.dashboards.value;
-  
-    const updatedDashboards =
-      dashboards.map(d =>
-        d.id === updatedDashboard.id
-          ? updatedDashboard
-          : d
-      );
-  
-    this.dashboardService.dashboards.next(
-      updatedDashboards
-    );
-  
-    const selectedDashboard =
-  updatedDashboards.find(
-    d => d.id === updatedDashboard.id
-  );
+          this.dashboardManager.updateDashboard(
+          this.selectedDashboard!.id,
+          updatedName
+);
 
-if (selectedDashboard) {
-
-  this.dashboardService.selectedDashboard.next(
-    selectedDashboard
-  );
-this.onDashboardChange();
-}
-    
-  this.changeDetectorRef.detectChanges();
-  
-  
-  },
-  
-              error: (error) => {
-  
-                console.error(
-                  'Error updating dashboard',
-                  error
-                );
-  
-              }
-  
-            });
-  
-        });
-  
-    }
+this.changeDetectorRef.detectChanges();
+    });
+  }
 
  openDeleteDashboard(): void {
 
@@ -311,62 +170,13 @@ this.onDashboardChange();
     return;
   }
 
-  const dashboardId =
-    this.selectedDashboard.id;
+  
 
-  this.dashboardApiService
-    .deleteDashboard(dashboardId)
-    .subscribe({
-
-      next: () => {
-
-        const currentDashboards =
-          this.dashboardService.dashboards.value;
-
-        const deletedIndex =
-          currentDashboards.findIndex(
-            d => d.id === dashboardId
-          );
-
-        const updatedDashboards =
-          currentDashboards.filter(
-            d => d.id !== dashboardId
-          );
-
-        this.dashboardService.dashboards.next(
-          updatedDashboards
-        );
-
-        if (updatedDashboards.length === 0) {
-
-          this.dashboardService.selectedDashboard.next(null);
-
-          return;
-
-        }
-
-        const nextIndex =
-          deletedIndex < updatedDashboards.length
-            ? deletedIndex
-            : updatedDashboards.length - 1;
-
-        this.dashboardService.selectedDashboard.next(
-  updatedDashboards[nextIndex]
+  this.dashboardManager.deleteDashboard(
+    this.selectedDashboard.id
 );
-this.onDashboardChange();
+
 this.changeDetectorRef.detectChanges();
-      },
-
-      error: (error) => {
-
-        console.error(
-          'Error deleting dashboard',
-          error
-        );
-
-      }
-
-    });
 
 }
 
@@ -398,34 +208,7 @@ console.log('Dialog Result:', widget);//
   dashboardId: widget.dashboardId
 });
 
-    this.widgetApiService
-      .addWidget({
-        name: widget.name,
-        chartType: widget.chartType,
-        dashboardId: widget.dashboardId
-      })
-      .subscribe({
-
-       next: (createdWidget) => {
-
-    if (createdWidget.dashboardId === this.selectedDashboard?.id) {
-        this.onDashboardChange();
-       
-    }
- this.changeDetectorRef.detectChanges();
-},
-
-        error: (error) => {
-
-          console.error(
-            'Error creating widget',
-            error
-          );
-
-        }
-
-      });
-
+    this.widgetManager.createWidget(widget);
   });
 
 }

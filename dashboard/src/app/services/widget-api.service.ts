@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-
+import{CreateWidgetDto} from '../models/createWidgetDto';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Widget } from '../models/widgets';
+import { Widget } from '../models/widget';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,11 +13,7 @@ export class WidgetApiService {
     return this.http.get<Widget[]>(`${environment.apiUrl}/dashboard/${dashboardId}/widget`);
   }
 
-  addWidget(widget: {       //used
-    name: string;
-    chartType: string;
-    dashboardId: string;
-  }) {
+  addWidget(widget: CreateWidgetDto) {
     return this.http.post<Widget>(`${environment.apiUrl}/widget`, widget);
   }
 
