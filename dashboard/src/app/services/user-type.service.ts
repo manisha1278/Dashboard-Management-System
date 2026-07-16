@@ -22,51 +22,21 @@ export class UserTypeService {
     return this.userTypesSubject.asObservable();
 
   }
+  setUserTypes(userTypes: UserType[]): void {
 
-  load(): void {
+  this.userTypesSubject.next(userTypes);
 
-    this.userTypeApiService
-      .getAll()
-      .subscribe(userTypes => {
+}
 
-        this.userTypesSubject.next(userTypes);
-
-      });
-
-  }
+  
   getCurrentUserTypes(): UserType[] {//
 
     return this.userTypesSubject.value;
 
 }
 
-  create(dto: CreateUserTypeDto): void {
+ 
 
-    this.userTypeApiService
-      .create(dto)
-      .subscribe({ next: () => 
-
-        this.load(),
-        error: (error) => {
-
-          console.error(error);
-      } });
-
-  }
-
-  update(userType: UserType): void {
-
-    this.userTypeApiService
-      .update(userType)
-      .subscribe({ next: () => 
-
-        this.load(),
-        error: (error) => {
-
-          console.error(error);
-      } });
-
-  }
 
   getById(id: string): UserType | undefined {
 

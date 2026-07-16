@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import{UserManager} from '../../../../services/managers/user-manager';
 import { Subject, take, takeUntil } from 'rxjs';
 import{MatDividerModule} from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import{UserService} from '../../../../services/user.service';
 import { TreeNode } from 'primeng/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { UserSelectionService } from '../../../../services/user-selection.service';
-import { UserService } from '../../../../services/user.service';
+import{UserTypeManager} from '../../../../services/managers/usertype-manager';
 import { UserTypeService } from '../../../../services/user-type.service';
 
 import { User } from '../../../../models/user';
@@ -21,6 +21,7 @@ import { UserDialogComponent } from './dialogs/user-dialog/user-dialog.component
 import { DashboardAssignDialogComponent } from './dialogs/dashboard-assign-dialog/dashboard-assign-dialog.component';
 import { AssignDashboardDto } from '../../../../models/assigndashboardDto';
 import { UserDashboardService } from '../../../../services/user-dashboard.service';
+import { UserDashboardManager } from '../../../../services/managers/user-dashboard-manager';
 @Component({
   selector: 'app-user-info',
   standalone: true,
@@ -53,12 +54,14 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly selectionService: UserSelectionService,
-    private readonly userService: UserService,
+    private readonly userManager: UserManager,
     private readonly userTypeService: UserTypeService,
     private readonly dialog: MatDialog,
-
+    private readonly userService: UserService,
+private readonly userTypeManager: UserTypeManager,
     private readonly userDashboardService: UserDashboardService,
- private readonly changeDetectorRef: ChangeDetectorRef
+ private readonly changeDetectorRef: ChangeDetectorRef,
+ private readonly userDashboardManager: UserDashboardManager
   ) { }
 
   ngOnInit(): void {
@@ -205,7 +208,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.userTypeService.update({
+      this.userTypeManager.update({
 
         ...this.selectedUserType!,
 
@@ -249,23 +252,39 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.userService.update({
+      this.userManager
+  .update({
 
-        ...this.selectedUser!,
+    ...this.selectedUser!,
 
-        username: result.username,
+    username: result.username,
 
-        fullName: result.fullName,
+    fullName: result.fullName,
 
-        email: result.email,
+    email: result.email,
 
-        contact: result.contact,
+    contact: result.contact,
 
-        userTypeId: result.userTypeId
+    userTypeId: result.userTypeId
 
-      });
-        this.loadUser(this.selectedUser!.id);
+  })
+  .subscribe({
+
+    next: () => {
+
+      this.loadUser(this.selectedUser!.id);
+
       this.changeDetectorRef.detectChanges();
+
+    },
+
+    error: error => {
+
+      console.error(error);
+
+    }
+
+  });
 
     });
    
@@ -303,7 +322,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
             return;
           }
 
-          this.userDashboardService
+         this.userDashboardManager
   .assignDashboards(
     this.selectedUser!.id,
     result.dashboardIds
@@ -312,11 +331,9 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
     next: () => {
 
-      this.userDashboardService.load(this.selectedUser!.id);
       this.loadUser(this.selectedUser!.id);
 
-    }
-  ,
+    },
 
     error: error => {
 

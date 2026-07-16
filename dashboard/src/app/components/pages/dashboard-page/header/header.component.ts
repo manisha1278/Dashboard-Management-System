@@ -5,7 +5,7 @@ import { EditDashboardDialogComponent } from '../../../pages/dashboard-page/head
 import { WidgetDialogComponent } from '../../../pages/dashboard-page/header/widget-dialog/widget-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardService } from '../../../../services/dashboard.service';
-
+import{UserTypeManager} from '../../../../services/managers/usertype-manager';
 import{ DashboardManager } from '../../../../services/managers/dashboard-manager';
 import{Widget} from '../../../../models/widget';
 import { ChangeDetectorRef } from '@angular/core';
@@ -24,10 +24,11 @@ import{CreateUserTypeDto} from '../../../../models/createUserTypeDto';
 import { UserTypeDialogComponent } from '../../user-page/user-info/dialogs/user-type-dialog/user-type-dialog.component';
 import{UserTypeService} from '../../../../services/user-type.service';
 import{UserDialogComponent} from '../../user-page/user-info/dialogs/user-dialog/user-dialog.component';
-import{UserService} from '../../../../services/user.service';
+
 import{CreateUserDto} from '../../../../models/createUserDto';
 import{AuthService} from '../../../../services/auth.service';
 import{WidgetManager} from '../../../../services/managers/widget-manager';
+import { UserManager } from '../../../../services/managers/user-manager';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -53,8 +54,8 @@ constructor(
     private dashboardManager: DashboardManager,
   
     private router: Router,
-    private readonly userTypeService: UserTypeService,
-    private readonly userService: UserService,
+    private readonly userTypeManager: UserTypeManager,
+   private readonly userManager: UserManager,
     private readonly changeDetectorRef: ChangeDetectorRef,
     public readonly authService: AuthService,
     private readonly widgetManager: WidgetManager
@@ -245,7 +246,7 @@ openAddUserTypeDialog(): void {
 
     }
 
-    this.userTypeService.create(result);
+    this.userTypeManager.create(result);
 
   });
 
@@ -276,7 +277,7 @@ openAddUserDialog(): void {
 
     }
 
-    this.userService.create(dto);
+    this.userManager.create(dto);
 
   });
 
