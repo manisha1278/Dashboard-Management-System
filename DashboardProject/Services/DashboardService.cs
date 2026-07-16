@@ -1,10 +1,12 @@
 ﻿using DashboardProject.Data;
+using DashboardProject.Models;
 using DashboardProject.Models.Entities;
+using DashboardProject.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DashboardProject.Services
 {
-    public class DashboardService
+    public class DashboardService:IDashboardService
     {
         private readonly ApplicationDbContext _context;
 
@@ -40,6 +42,92 @@ namespace DashboardProject.Services
                 .AsNoTracking()
                 .OrderBy(x => x.Name)
                 .ToListAsync();
+        }
+        public async Task<List<Widget>> GetWidgetsByDashboardIdAsync(Guid dashboardId)
+        {
+            return await _context.DashboardWidgets
+                .Where(dw => dw.DashboardId == dashboardId)
+                .Select(dw => dw.Widget)
+                .ToListAsync();
+        }
+        public async Task<Dashboard> CreateAsync(AddDashboardDto dto)
+        {
+            dto.Name = dto.Name.Trim();
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                throw new Exception("Dashboard name is required.");
+            }
+
+            bool exists = await _context.Dashboards
+                .AnyAsync(x => x.Name.ToLower() == dto.Name.ToLower());
+
+            if (exists)
+            {
+                throw new Exception("Dashboard already exists.");
+            }
+
+            var dashboard = new Dashboard
+            {
+                Name = dto.Name
+            };
+
+            _context.Dashboards.Add(dashboard);
+
+            await _context.SaveChangesAsync();
+
+            return dashboard;
+        }
+
+        public async Task<Dashboard> UpdateAsync(
+    Guid id,
+    UpdateDashboardDto dto)
+        {
+            dto.Name = dto.Name.Trim();
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                throw new Exception("Dashboard name is required.");
+            }
+
+            var dashboard = await _context.Dashboards
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (dashboard == null)
+            {
+                throw new Exception("Dashboard not found.");
+            }
+
+            bool exists = await _context.Dashboards.AnyAsync(x =>
+                x.Id != id &&
+                x.Name.ToLower() == dto.Name.ToLower());
+
+            if (exists)
+            {
+                throw new Exception("Dashboard already exists.");
+            }
+
+            dashboard.Name = dto.Name;
+
+            await _context.SaveChangesAsync();
+
+            return dashboard;
+        }
+        public async Task<Dashboard> DeleteAsync(Guid id)
+        {
+            var dashboard = await _context.Dashboards
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (dashboard == null)
+            {
+                throw new Exception("Dashboard not found.");
+            }
+
+            _context.Dashboards.Remove(dashboard);
+
+            await _context.SaveChangesAsync();
+
+            return dashboard;
         }
     }
 }

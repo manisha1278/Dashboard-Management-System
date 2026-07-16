@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DashboardProject.Services
 {
-    public class UserDashboardAssignmentService : IUserDashboardService
+    public class UserDashboardService : IUserDashboardService
     {
         private readonly ApplicationDbContext _context;
 
-        public UserDashboardAssignmentService(ApplicationDbContext context)
+        public UserDashboardService(ApplicationDbContext context) 
         {
             _context = context;
         }

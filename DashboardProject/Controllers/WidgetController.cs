@@ -1,6 +1,6 @@
-﻿using DashboardProject.Data;
-using DashboardProject.Models;
-using DashboardProject.Models.Entities;
+﻿using DashboardProject.Models;
+using DashboardProject.Services;
+using DashboardProject.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,75 +12,43 @@ namespace DashboardProject.Controllers
     [ApiController]
     public class WidgetController:ControllerBase
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly IWidgetManager _widgetManager;
 
-        public WidgetController(ApplicationDbContext dbContext)
+        public WidgetController(IWidgetManager widgetManager)
         {
-            this.dbContext = dbContext;
+            _widgetManager = widgetManager;
         }
-
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddWidget(AddWidgetDto addWidgetDto)
+        public async Task<IActionResult> AddWidget(AddWidgetDto addWidgetDto)
         {
-            
-                var widgetEntity = new Widget()
-                {
-                    Name = addWidgetDto.Name,
-                    ChartType = addWidgetDto.ChartType,
-                    DashboardId = addWidgetDto.DashboardId
-                };
+            var widget = await _widgetManager.CreateAsync(addWidgetDto);
 
-                dbContext.Widgets.Add(widgetEntity);
-                dbContext.SaveChanges();
-
-                var dashboardWidget = new DashboardWidget()
-                {
-                    DashboardId = addWidgetDto.DashboardId,
-                    WidgetId = widgetEntity.Id
-                };
-
-                dbContext.DashboardWidgets.Add(dashboardWidget);
-                dbContext.SaveChanges();
-
-                return Ok(widgetEntity);
-
-           
-
-
-
-
+            return Ok(widget);
         }
+
 
         [Authorize]
         [HttpPut]
         [Route("{id:guid}")]
-        public IActionResult UpdateWidget(Guid id, UpdateWidgetDto updateWidgetDto)//used
+        public async Task<IActionResult> UpdateWidget(
+     Guid id,
+     UpdateWidgetDto updateWidgetDto)
         {
-            var widget = dbContext.Widgets.Find(id);
-            if (widget is null)
-            {
-                return NotFound();
-            }
-            widget.Name = updateWidgetDto.Name;
-           widget.ChartType = updateWidgetDto.ChartType;
+            var widget =
+                await _widgetManager.UpdateAsync(id, updateWidgetDto);
 
-            dbContext.SaveChanges();
             return Ok(widget);
         }
+
         [Authorize]
         [HttpDelete]
         [Route("{id:guid}")]
-        public IActionResult DeleteWidget(Guid id)       //used
+        public async Task<IActionResult> DeleteWidget(Guid id)
         {
-            var widget = dbContext.Widgets.Find(id);
-            if (widget is null)
-            {
-                return NotFound();
-            }
-            dbContext.Widgets.Remove(widget);
-            dbContext.SaveChanges();
+            var widget = await _widgetManager.DeleteAsync(id);
+
             return Ok(widget);
         }
     }

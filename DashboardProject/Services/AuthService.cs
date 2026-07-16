@@ -1,6 +1,7 @@
 ﻿using DashboardProject.Data;
 using DashboardProject.Models;
 using DashboardProject.Models.Entities;
+using DashboardProject.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace DashboardProject.Services
 {
-    public class AuthService
+    public class AuthService:IAuthService 
     {
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;

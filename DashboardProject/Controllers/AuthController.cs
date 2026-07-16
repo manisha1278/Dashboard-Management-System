@@ -1,5 +1,6 @@
 ﻿using DashboardProject.Models;
 using DashboardProject.Services;
+using DashboardProject.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DashboardProject.Controllers
@@ -8,12 +9,17 @@ namespace DashboardProject.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(
-            [FromServices] AuthService authService,
-            [FromBody] LoginDto loginDto)
+        private readonly IAuthManager _authManager;
+
+        public AuthController(IAuthManager authManager)
         {
-            var response = await authService.AuthenticateAsync(loginDto);
+            _authManager = authManager;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var response = await _authManager.AuthenticateAsync(loginDto);
 
             if (response == null)
             {

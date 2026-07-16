@@ -8,17 +8,16 @@ namespace DashboardProject.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserManager _userManager;
 
-        public UserController(IUserService userService)
+        public UserController(IUserManager userManager)
         {
-            _userService = userService;
+            _userManager = userManager;
         }
-
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
-            var users = await _userService.GetAllAsync();
+            var users = await _userManager.GetAllAsync();
 
             return Ok(users);
         }
@@ -26,7 +25,7 @@ namespace DashboardProject.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<UserDto>> GetById(Guid id)
         {
-            var user = await _userService.GetByIdAsync(id);
+            var user = await _userManager.GetByIdAsync(id);
 
             if (user == null)
             {
@@ -41,7 +40,7 @@ namespace DashboardProject.Controllers
         {
             try
             {
-                var user = await _userService.CreateAsync(dto);
+                var user = await _userManager.CreateAsync(dto);
 
                 return CreatedAtAction(
                     nameof(GetById),
@@ -59,7 +58,7 @@ namespace DashboardProject.Controllers
             Guid id,
             UpdateUserDto dto)
         {
-            var user = await _userService.UpdateAsync(id, dto);
+            var user = await _userManager.UpdateAsync(id, dto);
 
             return Ok(user);
         }

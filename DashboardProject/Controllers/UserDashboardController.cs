@@ -6,14 +6,14 @@ namespace DashboardProject.Controllers
 {
     [ApiController]
     [Route("api/users/{userId:guid}/dashboards")]
-    public class UserDashboardAssignmentController : ControllerBase
+    public class UserDashboardController : ControllerBase
     {
-        private readonly IUserDashboardService _userDashboardService;
+        private readonly IUserDashboardManager _userDashboardManager;
 
-        public UserDashboardAssignmentController(
-            IUserDashboardService userDashboardService)
+        public UserDashboardController(
+            IUserDashboardManager userDashboardManager)
         {
-            _userDashboardService = userDashboardService;
+            _userDashboardManager = userDashboardManager;
         }
 
         [HttpGet]
@@ -21,7 +21,7 @@ namespace DashboardProject.Controllers
             Guid userId)
         {
             var dashboards =
-                await _userDashboardService.GetUserDashboardsAsync(userId);
+                await _userDashboardManager.GetUserDashboardsAsync(userId);
 
             return Ok(dashboards);
         }
@@ -31,7 +31,7 @@ namespace DashboardProject.Controllers
             Guid userId,
             [FromBody] List<Guid> dashboardIds)
         {
-            await _userDashboardService.AssignDashboardsAsync(
+            await _userDashboardManager.AssignDashboardsAsync(
                 userId,
                 dashboardIds);
 

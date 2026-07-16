@@ -1,6 +1,7 @@
 using DashboardProject.Data;
 using DashboardProject.Services;
 using DashboardProject.Services.Interfaces;
+using DashboardProject.Services.Managers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -59,13 +60,19 @@ builder.Services
 builder.Services.AddAuthorization();
 
 // Dependency Injection
-builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserDashboardService, UserDashboardAssignmentService>();
-builder.Services.AddScoped<DashboardService>();
-
+builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
+builder.Services.AddScoped<IDashboardService,DashboardService>();
+builder.Services.AddScoped<IWidgetService,WidgetService>();
+builder.Services.AddScoped<IDashboardManager, DashboardManager>();
+builder.Services.AddScoped<IWidgetManager, WidgetManager>();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IUserTypeManager, UserTypeManager>();
+builder.Services.AddScoped<IUserDashboardManager, UserDashboardManager>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 
 var app = builder.Build();

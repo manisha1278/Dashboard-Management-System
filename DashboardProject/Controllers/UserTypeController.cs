@@ -8,17 +8,17 @@ namespace DashboardProject.Controllers
     [Route("api/[controller]")]
     public class UserTypeController : ControllerBase
     {
-        private readonly IUserTypeService _userTypeService;
+        private readonly IUserTypeManager _userTypeManager;
 
-        public UserTypeController(IUserTypeService userTypeService)
+        public UserTypeController(IUserTypeManager userTypeManager)
         {
-            _userTypeService = userTypeService;
+            _userTypeManager = userTypeManager;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<UserTypeDto>>> GetAll()
         {
-            var userTypes = await _userTypeService.GetAllAsync();
+            var userTypes = await _userTypeManager.GetAllAsync();
 
             return Ok(userTypes);
         }
@@ -26,7 +26,7 @@ namespace DashboardProject.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<UserTypeDto>> GetById(Guid id)
         {
-            var userType = await _userTypeService.GetByIdAsync(id);
+            var userType = await _userTypeManager.GetByIdAsync(id);
 
             if (userType == null)
             {
@@ -41,7 +41,7 @@ namespace DashboardProject.Controllers
         {
             try
             {
-                var userType = await _userTypeService.CreateAsync(dto);
+                var userType = await _userTypeManager.CreateAsync(dto);
 
                 return CreatedAtAction(
                     nameof(GetById),
@@ -59,7 +59,7 @@ namespace DashboardProject.Controllers
             Guid id,
             UpdateUserTypeDto dto)
         {
-            var userType = await _userTypeService.UpdateAsync(id, dto);
+            var userType = await _userTypeManager.UpdateAsync(id, dto);
 
             return Ok(userType);
         }

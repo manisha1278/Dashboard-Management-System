@@ -1,7 +1,5 @@
-﻿using DashboardProject.Data;
-using DashboardProject.Models;
-using DashboardProject.Models.Entities;
-using DashboardProject.Services;
+﻿using DashboardProject.Models;
+using DashboardProject.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,18 +11,17 @@ namespace DashboardProject.Controllers
     [ApiController]
     public class DashboardController:ControllerBase
     {
-        private readonly ApplicationDbContext dbContext;
-        private readonly DashboardService dashboardService;
-       
+        private readonly IDashboardManager _dashboardManager;
 
-        public DashboardController(ApplicationDbContext dbContext, DashboardService dashboardService)
+        public DashboardController(
+            IDashboardManager dashboardManager)
         {
-            this.dbContext = dbContext;
-            this.dashboardService = dashboardService;
+            _dashboardManager = dashboardManager;
         }
+
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllDashboards() //used
+        public async Task<IActionResult> GetAllDashboards() 
         {
             var userIdClaim =
                 User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -34,64 +31,53 @@ namespace DashboardProject.Controllers
                 return Unauthorized();
             }
 
-            var dashboards = await dashboardService
+            var dashboards = await _dashboardManager
                 .GetDashboardsForUserAsync(Guid.Parse(userIdClaim));
 
             return Ok(dashboards);
         }
+
         [Authorize]
         [HttpGet]        
         [Route("{id:guid}/widget")]
-        public IActionResult GetWidgetByDashboardId(Guid id)//used
+        public async Task<IActionResult> GetWidgetByDashboardId(Guid id)
         {
 
-            var widgets = dbContext.DashboardWidgets
-                .Where(dw => dw.DashboardId == id)
-                .Select(dw => dw.Widget)
-                .ToList();
+            var widgets =
+        await _dashboardManager.GetWidgetsByDashboardIdAsync(id);
 
             return Ok(widgets);
         }
+
         [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public IActionResult AddDashboard(AddDashboardDto addDashboardDto)//used
+        public async Task<IActionResult> AddDashboard(AddDashboardDto addDashboardDto)
         {
-            var dashboardEntity = new Dashboard()
-            {
-                Name = addDashboardDto.Name
-                
-            };
-            dbContext.Dashboards.Add(dashboardEntity);
-            dbContext.SaveChanges();
-            return Ok(dashboardEntity);
-        }
-        [Authorize(Roles="Administrator")]
-        [HttpPut]
-        [Route("{id:guid}")]
-        public IActionResult UpdateDashboard(Guid id, UpdateDashboardDto updateDashboardDto)//used
-        {
-            var dashboard = dbContext.Dashboards.Find(id);
-            if (dashboard is null)
-            {
-                return NotFound();
-            }
-            dashboard.Name = updateDashboardDto.Name;
-            
-            dbContext.SaveChanges();
+            var dashboard =
+                await _dashboardManager.CreateAsync(addDashboardDto);
+
             return Ok(dashboard);
         }
-        [Authorize(Roles = "Administrator")] 
+
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateDashboard(Guid id,UpdateDashboardDto updateDashboardDto)
+        {
+            var dashboard =
+                await _dashboardManager.UpdateAsync(id, updateDashboardDto);
+
+            return Ok(dashboard);
+        }
+
+        [Authorize(Roles = "Administrator")]
         [HttpDelete]
         [Route("{id:guid}")]
-        public IActionResult DeleteDashboard(Guid id)  //used
+        public async Task<IActionResult> DeleteDashboard(Guid id)
         {
-            var dashboard = dbContext.Dashboards.Find(id);
-            if (dashboard is null)
-            {
-                return NotFound();
-            }
-            dbContext.Dashboards.Remove(dashboard);
-            dbContext.SaveChanges();
+            var dashboard = await _dashboardManager.DeleteAsync(id);
+
             return Ok(dashboard);
         }
 
