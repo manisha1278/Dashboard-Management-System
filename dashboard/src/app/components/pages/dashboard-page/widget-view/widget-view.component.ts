@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Dashboard } from '../../../../models/dashboard';
 import { Widget } from '../../../../models/widget';
 
-import { DashboardService } from '../../../../services/dashboard.service';
-import { WidgetManager } from '../../../../services/managers/widget-manager';
+import { DashboardService } from '../../../../services/state-services/dashboard.service';
+import { WidgetManager } from '../../../../services/manager-services/widget-manager';
 
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 

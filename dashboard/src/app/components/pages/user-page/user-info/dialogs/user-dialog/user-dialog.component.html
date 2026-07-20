@@ -1,137 +1,192 @@
 <h2 mat-dialog-title>
 
-  {{ data ? 'Edit User' : 'Add User' }}
+    {{ data ? 'Edit User' : 'Add User' }}
 
 </h2>
 
 <mat-dialog-content>
 
-<form [formGroup]="form">
+    <form [formGroup]="form">
 
-    <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="full-width">
 
-        <mat-label>Username</mat-label>
+            <mat-label>Username</mat-label>
 
-        <input matInput formControlName="username">
-        @if(isSystemUser){
+            <input matInput formControlName="username">
+
+            @if(form.get('username')?.hasError('required')&& form.get('username')?.touched){
+
+            <mat-error>
+
+                Username is required
+
+            </mat-error>
+
+            }
+            @if(isSystemUser){
 
             <mat-hint>
 
-                 Username cannot be changed for the system administrato
+                Username cannot be changed for the system administrator
 
             </mat-hint>
 
-        }
+            }
 
-    </mat-form-field>
-    @if (!data) {
+        </mat-form-field>
+        @if (!data) {
 
-<mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="full-width">
 
-    <mat-label>Password</mat-label>
+            <mat-label>Password</mat-label>
 
-    <input
-        matInput
-        type="password"
-        formControlName="password">
+            <input matInput type="password" formControlName="password">
+            @if(form.get('password')?.hasError('required')&& form.get('password')?.touched){
 
-</mat-form-field>
+            <mat-error>
 
-}
+                Password is required
 
-    <mat-form-field appearance="outline" class="full-width">
-
-        <mat-label>Full Name</mat-label>
-
-        <input matInput formControlName="fullName">
-
-        @if(isSystemUser){
-
-    <mat-hint>
-
-        Full name is fixed for the system administrator.
-
-    </mat-hint>
-
-}
-
-    </mat-form-field>
-
-    
-
-    <mat-form-field appearance="outline" class="full-width">
-
-        <mat-label>Email</mat-label>
-
-        <input
-            matInput
-            formControlName="email">
-
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-
-        <mat-label>Contact</mat-label>
-
-        <input
-            matInput
-            formControlName="contact">
-
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-
-        <mat-label>User Type</mat-label>
-
-        <mat-select formControlName="userTypeId">
-
-            @if(isSystemUser){
-
-           <mat-hint>
-
-            System administrator cannot be moved to another user type.
-
-              </mat-hint>
+            </mat-error>
 
             }
 
-            @for(userType of userTypes; track userType.id){
 
-                <mat-option
-                    [value]="userType.id">
+        </mat-form-field>
+
+        }
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>Full Name</mat-label>
+
+            <input matInput formControlName="fullName">
+            @if(form.get('fullName')?.hasError('required')&& form.get('fullName')?.touched){
+
+            <mat-error>
+
+                Full name is required
+
+            </mat-error>
+
+            }
+
+            @if(isSystemUser){
+
+            <mat-hint>
+
+                Full name is fixed for the system administrator.
+
+            </mat-hint>
+
+            }
+
+        </mat-form-field>
+
+
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>Email</mat-label>
+
+            <input matInput formControlName="email">
+
+            @if(form.get('email')?.hasError('required')&& form.get('email')?.touched){
+
+            <mat-error>
+
+                Email is required
+
+            </mat-error>
+
+            }
+            @if(form.get('email')?.hasError('email')&& form.get('email')?.touched){
+
+            <mat-error>
+
+                Invalid email format
+
+            </mat-error>
+
+            }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>Contact</mat-label>
+
+            <input matInput formControlName="contact">
+
+            @if(form.get('contact')?.hasError('required')&& form.get('contact')?.touched){
+
+            <mat-error>
+
+                Contact is required
+
+            </mat-error>
+
+            }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>User Type</mat-label>
+
+            <mat-select formControlName="userTypeId">
+
+
+                @for(userType of userTypes; track userType.id){
+
+                <mat-option [value]="userType.id">
 
                     {{ userType.name }}
 
                 </mat-option>
 
+                }
+
+            </mat-select>
+
+            @if(form.get('userTypeId')?.hasError('required')&& form.get('userTypeId')?.touched){
+
+            <mat-error>
+
+                User type is required
+
+            </mat-error>
             }
 
-        </mat-select>
+            @if(isSystemUser){
 
-    </mat-form-field>
+            <mat-hint>
 
-</form>
+                System administrator cannot be moved to another user type.
+
+            </mat-hint>
+
+            }
+
+
+        </mat-form-field>
+
+    </form>
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
 
-<button
-    mat-button
-    (click)="cancel()">
+    <button mat-button (click)="cancel()">
 
-    Cancel
+        Cancel
 
-</button>
+    </button>
 
-<button
-    mat-raised-button
-    color="primary"
-    (click)="save()">
+    <button mat-raised-button color="primary" (click)="save()">
 
-    Save
+        Save
 
-</button>
+    </button>
 
 </mat-dialog-actions>
-

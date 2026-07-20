@@ -1,55 +1,65 @@
 <div class="dialog-container">
 
-
-
     <h2 mat-dialog-title class="dialog-title">
 
         <mat-icon class="title-icon">
-
             edit_note
-
         </mat-icon>
 
         Edit Dashboard
 
     </h2>
 
-
-
     <mat-dialog-content class="dialog-content">
 
-        <mat-form-field
-            appearance="outline"
-            class="dashboard-field">
+        <form [formGroup]="form">
 
-            <mat-label>
+            <mat-form-field
+                appearance="outline"
+                class="dashboard-field">
 
-                Dashboard Name
+                <mat-label>
 
-            </mat-label>
+                    Dashboard Name
 
-            <input
-                matInput
-                [(ngModel)]="dashboardName"
-                placeholder="Enter dashboard name">
+                </mat-label>
 
-            <mat-icon matSuffix>
+                <input
+                    matInput
+                    formControlName="dashboardName"
+                    placeholder="Enter dashboard name">
 
-                dashboard_customize
+                <mat-icon matSuffix>
 
-            </mat-icon>
+                    dashboard_customize
 
-        </mat-form-field>
+                </mat-icon>
+
+                @if (
+                    form.get('dashboardName')?.hasError('required') &&
+                    form.get('dashboardName')?.touched
+                ) {
+
+                    <mat-error>
+
+                        Dashboard name is required.
+
+                    </mat-error>
+
+                }
+
+            </mat-form-field>
+
+        </form>
 
     </mat-dialog-content>
-
-
 
     <mat-dialog-actions class="dialog-actions">
 
         <button
             mat-stroked-button
             class="cancel-btn"
+            type="button"
             (click)="cancel()">
 
             Cancel
@@ -60,6 +70,7 @@
             mat-raised-button
             color="primary"
             class="update-btn"
+            type="button"
             (click)="save()">
 
             <mat-icon>

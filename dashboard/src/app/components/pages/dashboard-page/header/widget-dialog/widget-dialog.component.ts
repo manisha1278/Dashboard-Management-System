@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule,MatDialogRef} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +14,7 @@ import{MatIconModule} from '@angular/material/icon';
 @Component({
   selector: 'app-widget-dialog',
   imports: [
-  FormsModule,
+  ReactiveFormsModule,
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
@@ -24,11 +27,7 @@ import{MatIconModule} from '@angular/material/icon';
 export class WidgetDialogComponent {
   isEditMode=false;
 
-  widgetName = '';
-
-  chartType = '';
-
-  dashboardId!: string;
+ readonly form: FormGroup;
 
   chartTypes = [
     'Line Chart',
@@ -39,54 +38,61 @@ export class WidgetDialogComponent {
   dashboards: any[] = [];
 
   constructor(
+    private fb: FormBuilder,
     private dialogRef: MatDialogRef<WidgetDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+) {
 
-    console.log(this.dashboards);
-console.log(Array.isArray(this.dashboards));
+    this.dashboards = data?.dashboards ?? [];
 
-   this.dashboards = data?.dashboards ?? [];
+    this.isEditMode = !!data?.widget;
 
-    if (data?.widget) {
+    this.form = this.fb.group({
 
-    this.isEditMode = true;            //showing the widget data in widget dialog
+        widgetName: [
+            data?.widget?.name ?? '',
+            Validators.required
+        ],
 
-    this.widgetName =
-      data.widget.name;
+        chartType: [
+            data?.widget?.chartType ?? '',
+            Validators.required
+        ],
 
-    this.chartType =
-      data.widget.chartType;
+        dashboardId: [
+            data?.widget?.dashboardId ?? '',
+            Validators.required
+        ]
 
-    this.dashboardId =
-      data.widget.dashboardId;
+    });
 
-  }
+}
 
-  }
+  save(): void {
 
-  save() {
-    console.log('Save clicked');
+    if (this.form.invalid) {
 
-  const widget: Widget = {
+        this.form.markAllAsTouched();
 
-  //id:this.data.widget.id,
-    id: this.isEditMode
-      ? this.data.widget.id
-      : '',
+        return;
 
-    name:
-      this.widgetName,
+    }
 
-    chartType:
-      this.chartType,
+    const widget: Widget = {
 
-    dashboardId:
-      this.dashboardId
+        id: this.isEditMode
+            ? this.data.widget.id
+            : '',
 
-  };
+        name: this.form.value.widgetName,
 
-  this.dialogRef.close(widget);
+        chartType: this.form.value.chartType,
+
+        dashboardId: this.form.value.dashboardId
+
+    };
+
+    this.dialogRef.close(widget);
 
 }
 

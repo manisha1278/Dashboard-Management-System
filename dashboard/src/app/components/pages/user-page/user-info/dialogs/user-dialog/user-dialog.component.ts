@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { UserTypeService } from '../../../../../../services/user-type.service';
+import { UserTypeService } from '../../../../../../services/state-services/user-type.service';
 import { UserType } from '../../../../../../models/user-type';
 import { User } from '../../../../../../models/user';
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 
 import { TreeModule, TreeNodeSelectEvent } from 'primeng/tree';
-import { TreeNode} from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UserSelectionService } from '../../../../services/user-selection.service';
-import { UserTreeService } from '../../../../services/user-tree.service';
-import { UserService } from '../../../../services/user.service';
-import { UserTypeService } from '../../../../services/user-type.service';
+import { UserSelectionService } from '../../../../services/state-services/user-selection.service';
+import { UserTreeService } from '../../../../services/state-services/user-tree.service';
+import { UserService } from '../../../../services/state-services/user.service';
+import { UserTypeService } from '../../../../services/state-services/user-type.service';
 
 @Component({
   selector: 'app-user-tree',
@@ -29,7 +29,7 @@ import { UserTypeService } from '../../../../services/user-type.service';
   templateUrl: './user-tree.component.html',
   styleUrl: './user-tree.component.css'
 })
-export class UserTreeComponent{
+export class UserTreeComponent {
 
   readonly userTreeNodes$: Observable<TreeNode[]>;
 
@@ -43,7 +43,7 @@ export class UserTreeComponent{
     this.userTreeNodes$ = this.createTree();
   }
 
- 
+
   private createTree(): Observable<TreeNode[]> {
 
     return combineLatest([
@@ -57,9 +57,9 @@ export class UserTreeComponent{
 
   }
 
-  
+
   onNodeSelect({ node }: TreeNodeSelectEvent): void {
- console.log('Tree Selected:', node);
+    console.log('Tree Selected:', node);
     if (!node) {
       return;
     }

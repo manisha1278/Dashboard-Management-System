@@ -4,11 +4,10 @@ import { DashboardDialogComponent } from '../../../pages/dashboard-page/header/d
 import { EditDashboardDialogComponent } from '../../../pages/dashboard-page/header/edit-dashboard-dialog/edit-dashboard-dialog.component';
 import { WidgetDialogComponent } from '../../../pages/dashboard-page/header/widget-dialog/widget-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DashboardService } from '../../../../services/dashboard.service';
-import{UserTypeManager} from '../../../../services/managers/usertype-manager';
-import{ DashboardManager } from '../../../../services/managers/dashboard-manager';
+import { DashboardService } from '../../../../services/state-services/dashboard.service';
+import{UserTypeManager} from '../../../../services/manager-services/usertype-manager';
+import{ DashboardManager } from '../../../../services/manager-services/dashboard-manager';
 import{Widget} from '../../../../models/widget';
-import { ChangeDetectorRef } from '@angular/core';
 import {  MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,16 +18,12 @@ import { MatIconModule } from '@angular/material/icon';
 import{FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import{UserType} from '../../../../models/user-type';
-import{CreateUserTypeDto} from '../../../../models/createUserTypeDto';
 import { UserTypeDialogComponent } from '../../user-page/user-info/dialogs/user-type-dialog/user-type-dialog.component';
-import{UserTypeService} from '../../../../services/user-type.service';
 import{UserDialogComponent} from '../../user-page/user-info/dialogs/user-dialog/user-dialog.component';
-
 import{CreateUserDto} from '../../../../models/createUserDto';
-import{AuthService} from '../../../../services/auth.service';
-import{WidgetManager} from '../../../../services/managers/widget-manager';
-import { UserManager } from '../../../../services/managers/user-manager';
+import{AuthService} from '../../../../services/state-services/auth.service';
+import{WidgetManager} from '../../../../services/manager-services/widget-manager';
+import { UserManager } from '../../../../services/manager-services/user-manager';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -45,8 +40,7 @@ import { UserManager } from '../../../../services/managers/user-manager';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
-   //selectedDashboard?: Dashboard;
-//selectedDashboardId?: string;
+ 
  
 constructor(
     private dialog: MatDialog,
@@ -56,7 +50,6 @@ constructor(
     private router: Router,
     private readonly userTypeManager: UserTypeManager,
    private readonly userManager: UserManager,
-    private readonly changeDetectorRef: ChangeDetectorRef,
     public readonly authService: AuthService,
     private readonly widgetManager: WidgetManager
 
@@ -122,7 +115,7 @@ openDashboardDialog(): void {
         dashboardName
       );
 
-      this.changeDetectorRef.detectChanges();
+    
 
     });
 
@@ -159,11 +152,11 @@ openEditDashboardDialog(): void {
           this.dashboardManager.updateDashboard(
           this.selectedDashboard!.id,
           updatedName
-);
+          );
 
-this.changeDetectorRef.detectChanges();
-    });
-  }
+            
+        });
+}
 
  openDeleteDashboard(): void {
 
@@ -177,7 +170,7 @@ this.changeDetectorRef.detectChanges();
     this.selectedDashboard.id
 );
 
-this.changeDetectorRef.detectChanges();
+
 
 }
 

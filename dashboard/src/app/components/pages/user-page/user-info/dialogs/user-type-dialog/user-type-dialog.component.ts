@@ -8,7 +8,8 @@ import {
   Validators
 } from '@angular/forms';
 
-import {MAT_DIALOG_DATA,
+import {
+  MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef
 } from '@angular/material/dialog';
@@ -16,7 +17,6 @@ import {MAT_DIALOG_DATA,
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CreateUserTypeDto } from '../../../../../../models/createUserTypeDto';
 import { UserType } from '../../../../../../models/user-type';
 
 @Component({
@@ -65,21 +65,21 @@ export class UserTypeDialogComponent {
 
   save(): void {
 
-  if (this.userTypeForm.invalid) {
+    if (this.userTypeForm.invalid) {
 
-    this.userTypeForm.markAllAsTouched();
+      this.userTypeForm.markAllAsTouched();
 
-    return;
+      return;
+
+    }
+
+    this.dialogRef.close({
+
+      name: this.userTypeForm.value.name.trim()
+
+    });
 
   }
-
-  this.dialogRef.close({
-
-    name: this.userTypeForm.value.name.trim()
-
-  });
-
-}
 
   cancel(): void {
 

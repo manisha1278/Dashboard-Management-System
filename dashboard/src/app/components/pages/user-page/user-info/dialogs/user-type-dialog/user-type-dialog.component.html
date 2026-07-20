@@ -8,34 +8,29 @@
 
     <form [formGroup]="userTypeForm">
 
-        <mat-form-field
-            appearance="outline"
-            class="full-width">
+        <mat-form-field appearance="outline" class="full-width">
 
             <mat-label>User Type Name</mat-label>
 
-            <input
-                matInput
-                maxlength="50"
-                formControlName="name">
+            <input matInput maxlength="50" formControlName="name">
 
             @if(userTypeForm.get('name')?.hasError('required')){
 
-                <mat-error>
+            <mat-error>
 
-                    User Type Name is required.
+                User Type Name is required.
 
-                </mat-error>
+            </mat-error>
 
             }
 
             @if(userTypeForm.get('name')?.hasError('maxlength')){
 
-                <mat-error>
+            <mat-error>
 
-                    Maximum 50 characters allowed.
+                Maximum 50 characters allowed.
 
-                </mat-error>
+            </mat-error>
 
             }
 
@@ -47,20 +42,13 @@
 
 <mat-dialog-actions align="end">
 
-    <button
-        mat-button
-        type="button"
-        (click)="cancel()">
+    <button mat-button type="button" (click)="cancel()">
 
         Cancel
 
     </button>
 
-    <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="save()">
+    <button mat-raised-button color="primary" type="button" (click)="save()">
 
         Save
 

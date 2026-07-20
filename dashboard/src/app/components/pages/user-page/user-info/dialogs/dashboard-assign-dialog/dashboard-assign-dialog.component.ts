@@ -1,4 +1,4 @@
-import { Component,Inject,inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 
 import {
   MAT_DIALOG_DATA,
@@ -7,11 +7,9 @@ import {
 } from '@angular/material/dialog';
 
 import { FormsModule } from '@angular/forms';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import{UserDashboard} from '../../../../../../models/user-dashboard';
-
+import { UserDashboard } from '../../../../../../models/user-dashboard';
 import { CommonModule } from '@angular/common';
 
 export interface DashboardAssignmentDialogData {
@@ -29,7 +27,7 @@ export interface DashboardAssignmentDialogData {
   styleUrl: './dashboard-assign-dialog.component.css',
 })
 export class DashboardAssignDialogComponent {
-   selectedIds: string[];
+  selectedIds: string[];
 
   constructor(
 
@@ -40,9 +38,9 @@ export class DashboardAssignDialogComponent {
 
   ) {
 
-      this.selectedIds = data.dashboards
-        .filter(x => x.isAssigned)
-        .map(x => x.dashboardId);
+    this.selectedIds = data.dashboards
+      .filter(x => x.isAssigned)
+      .map(x => x.dashboardId);
   }
 
   isSelected(id: string): boolean {

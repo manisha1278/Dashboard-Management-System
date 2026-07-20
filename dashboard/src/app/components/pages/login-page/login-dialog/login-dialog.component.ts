@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Login } from '../../../../models/login';
-import { LoginManager } from '../../../../services/managers/login-manager';
+import { LoginManager } from '../../../../services/manager-services/login-manager';
 @Component({
   selector: 'app-login-dialog',
   imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, CommonModule, MatCardModule, MatIconModule], 

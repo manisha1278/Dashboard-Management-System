@@ -1,59 +1,59 @@
 <div class="dialog-container">
 
-
     <h2 mat-dialog-title class="dialog-title">
 
         Add Dashboard
 
     </h2>
 
-   
-
     <mat-dialog-content class="dialog-content">
 
-        <mat-form-field
-            appearance="outline"
-            class="dashboard-field">
+        <form [formGroup]="form">
 
-            <mat-label>
+            <mat-form-field appearance="outline" class="dashboard-field">
 
-                Dashboard Name
+                <mat-label>
 
-            </mat-label>
+                    Dashboard Name
 
-            <input
-                matInput
-                [(ngModel)]="dashboardName"
-                placeholder="Enter dashboard name">
+                </mat-label>
 
-            <mat-icon matSuffix>
+                <input matInput formControlName="dashboardName" placeholder="Enter dashboard name">
 
-                dashboard
+                <mat-icon matSuffix>
 
-            </mat-icon>
+                    dashboard
 
-        </mat-form-field>
+                </mat-icon>
+
+                @if (
+                form.get('dashboardName')?.hasError('required') &&
+                form.get('dashboardName')?.touched
+                ) {
+
+                <mat-error>
+
+                    Dashboard name is required.
+
+                </mat-error>
+
+                }
+
+            </mat-form-field>
+
+        </form>
 
     </mat-dialog-content>
 
-    
-
     <mat-dialog-actions class="dialog-actions">
 
-        <button
-            mat-stroked-button
-            class="cancel-btn"
-            (click)="cancel()">
+        <button mat-stroked-button class="cancel-btn" type="button" (click)="cancel()">
 
             Cancel
 
         </button>
 
-        <button
-            mat-raised-button
-            color="primary"
-            class="save-btn"
-            (click)="save()">
+        <button mat-raised-button color="primary" class="save-btn" type="button" (click)="save()">
 
             Save
 

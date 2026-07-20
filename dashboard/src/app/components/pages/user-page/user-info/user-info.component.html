@@ -36,9 +36,7 @@
                     User Type
                 </span>
 
-                <span
-                    class="status-chip"
-                    [class.inactive]="!selectedUserType.isActive">
+                <span class="status-chip" [class.inactive]="!selectedUserType.isActive">
 
                     {{ selectedUserType.isActive ? 'Active' : 'Inactive' }}
 
@@ -50,11 +48,7 @@
 
         @if(!selectedUserType.isSystem){
 
-        <button
-            mat-flat-button
-            color="primary"
-            class="edit-btn"
-            (click)="openEditUserTypeDialog()">
+        <button mat-flat-button color="primary" class="edit-btn" (click)="openEditUserTypeDialog()">
 
             <mat-icon>edit</mat-icon>
 
@@ -160,9 +154,7 @@
 
                 </p>
 
-                <span
-                    class="status"
-                    [class.active]="selectedUser.isActive">
+                <span class="status" [class.active]="selectedUser.isActive">
 
                     {{ selectedUser.isActive ? 'Active' : 'Inactive' }}
 
@@ -172,103 +164,102 @@
 
         </div>
 
-        <button mat-flat-button
-    color="primary" (click)="openEditUserDialog()" class="edit-btn">
+        <button mat-flat-button color="primary" (click)="openEditUserDialog()" class="edit-btn">
 
-    <mat-icon>edit</mat-icon>
+            <mat-icon>edit</mat-icon>
 
-    Edit User
+            Edit User
 
-</button>
+        </button>
     </mat-card-header>
 
     <mat-card-content>
 
-    <div class="info-grid">
+        <div class="info-grid">
 
-        <div class="info-item">
+            <div class="info-item">
 
-            <div class="icon-box">
-                <mat-icon>person</mat-icon>
+                <div class="icon-box">
+                    <mat-icon>person</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">Username</span>
+                    <span class="field-value">{{selectedUser.username}}</span>
+                </div>
+
             </div>
 
-            <div>
-                <span class="field-title">Username</span>
-                <span class="field-value">{{selectedUser.username}}</span>
+            <div class="info-item">
+
+                <div class="icon-box">
+                    <mat-icon>badge</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">User Type</span>
+                    <span class="field-value">{{selectedUserTypeName}}</span>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="icon-box">
+                    <mat-icon>mail</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">Email</span>
+                    <span class="field-value">{{selectedUser.email}}</span>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="icon-box">
+                    <mat-icon>phone</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">Contact</span>
+                    <span class="field-value">{{selectedUser.contact}}</span>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="icon-box">
+                    <mat-icon>calendar_today</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">Created On</span>
+                    <span class="field-value">
+                        {{selectedUser.createdOn | date:'dd MMM yyyy'}}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="icon-box">
+                    <mat-icon>account_circle</mat-icon>
+                </div>
+
+                <div>
+                    <span class="field-title">Created By</span>
+                    <span class="field-value">{{selectedUser.createdBy}}</span>
+                </div>
+
             </div>
 
         </div>
 
-        <div class="info-item">
-
-            <div class="icon-box">
-                <mat-icon>badge</mat-icon>
-            </div>
-
-            <div>
-                <span class="field-title">User Type</span>
-                <span class="field-value">{{selectedUserTypeName}}</span>
-            </div>
-
-        </div>
-
-        <div class="info-item">
-
-            <div class="icon-box">
-                <mat-icon>mail</mat-icon>
-            </div>
-
-            <div>
-                <span class="field-title">Email</span>
-                <span class="field-value">{{selectedUser.email}}</span>
-            </div>
-
-        </div>
-
-        <div class="info-item">
-
-            <div class="icon-box">
-                <mat-icon>phone</mat-icon>
-            </div>
-
-            <div>
-                <span class="field-title">Contact</span>
-                <span class="field-value">{{selectedUser.contact}}</span>
-            </div>
-
-        </div>
-
-        <div class="info-item">
-
-            <div class="icon-box">
-                <mat-icon>calendar_today</mat-icon>
-            </div>
-
-            <div>
-                <span class="field-title">Created On</span>
-                <span class="field-value">
-                    {{selectedUser.createdOn | date:'dd MMM yyyy'}}
-                </span>
-            </div>
-
-        </div>
-
-        <div class="info-item">
-
-            <div class="icon-box">
-                <mat-icon>account_circle</mat-icon>
-            </div>
-
-            <div>
-                <span class="field-title">Created By</span>
-                <span class="field-value">{{selectedUser.createdBy}}</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</mat-card-content>
+    </mat-card-content>
 </mat-card>
 
 <mat-card class="dashboard-card">
@@ -285,73 +276,70 @@
 
         @if(!selectedUser.isSystem){
 
-<button
-    mat-flat-button
-    color="primary"
-    (click)="openAssignDashboardDialog()" class="edit-btn">
+        <button mat-flat-button color="primary" (click)="openAssignDashboardDialog()" class="edit-btn">
 
-    Assign Dashboards
+            Assign Dashboards
 
-</button>
+        </button>
 
-}@else{
+        }@else{
 
-<div class="system-info">
+        <div class="system-info">
 
-    <mat-icon>verified_user</mat-icon>
+            <mat-icon>verified_user</mat-icon>
 
-    System Administrator has access to all dashboards.
-
-</div>
-
-}
-
-    </mat-card-header>
-
-   <mat-card-content>
-
-    @if (assignedDashboardNames.length > 0) {
-
-        @for (dashboard of assignedDashboardNames; track dashboard) {
-
-            <div class="dashboard-item">
-
-    <div class="dashboard-left">
-
-        <div class="dashboard-icon">
-
-            <mat-icon>dashboard</mat-icon>
+            System Administrator has access to all dashboards.
 
         </div>
-
-        <div>
-
-            <h3>{{dashboard}}</h3>
-
-            <p>Assigned dashboard</p>
-
-        </div>
-
-    </div>
-
-    <mat-icon color="primary">
-
-        check_circle
-
-    </mat-icon>
-
-</div>
 
         }
 
-    }
-    @else {
+    </mat-card-header>
+
+    <mat-card-content>
+
+        @if (assignedDashboardNames.length > 0) {
+
+        @for (dashboard of assignedDashboardNames; track dashboard) {
+
+        <div class="dashboard-item">
+
+            <div class="dashboard-left">
+
+                <div class="dashboard-icon">
+
+                    <mat-icon>dashboard</mat-icon>
+
+                </div>
+
+                <div>
+
+                    <h3>{{dashboard}}</h3>
+
+                    <p>Assigned dashboard</p>
+
+                </div>
+
+            </div>
+
+            <mat-icon color="primary">
+
+                check_circle
+
+            </mat-icon>
+
+        </div>
+
+        }
+
+        }
+        @else {
 
         <p>No dashboards assigned.</p>
 
-    }
+        }
 
-</mat-card-content>
+    </mat-card-content>
 
 </mat-card>
 

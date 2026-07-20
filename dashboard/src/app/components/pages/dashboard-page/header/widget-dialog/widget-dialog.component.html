@@ -1,133 +1,125 @@
 <div class="dialog-container">
 
-
-
     <h2 mat-dialog-title class="dialog-title">
 
         <mat-icon class="title-icon">
-
             {{ isEditMode ? 'edit_note' : 'add_chart' }}
-
         </mat-icon>
 
         {{ isEditMode ? 'Edit Widget' : 'Create Widget' }}
 
     </h2>
 
-
-
     <mat-dialog-content class="dialog-content">
 
-        
-
-        <mat-form-field
-            appearance="outline"
-            class="dialog-field">
-
-            <mat-label>
-
-                Widget Name
-
-            </mat-label>
-
-            <input
-                matInput
-                [(ngModel)]="widgetName"
-                placeholder="Enter widget name">
-
-            <mat-icon matSuffix>
-
-                dashboard_customize
-
-            </mat-icon>
-
-        </mat-form-field>
-
+        <form [formGroup]="form">
 
         
 
-        <mat-form-field
-            appearance="outline"
-            class="dialog-field">
+            <mat-form-field appearance="outline" class="dialog-field">
 
-            <mat-label>
+                <mat-label>Widget Name</mat-label>
 
-                Chart Type
+                <input
+                    matInput
+                    formControlName="widgetName"
+                    placeholder="Enter widget name">
 
-            </mat-label>
+                <mat-icon matSuffix>
+                    dashboard_customize
+                </mat-icon>
 
-            <mat-select [(value)]="chartType">
+                @if (form.get('widgetName')?.hasError('required') &&
+                     form.get('widgetName')?.touched) {
 
-                <mat-option value="Line Chart">
+                    <mat-error>
+                        Widget name is required.
+                    </mat-error>
 
-                    Line Chart
+                }
 
-                </mat-option>
+            </mat-form-field>
 
-                <mat-option value="Bar Chart">
+        
 
-                    Bar Chart
+            <mat-form-field appearance="outline" class="dialog-field">
 
-                </mat-option>
+                <mat-label>Chart Type</mat-label>
 
-                <mat-option value="Pie Chart">
+                <mat-select formControlName="chartType">
 
-                    Pie Chart
+                    <mat-option value="Line Chart">
+                        Line Chart
+                    </mat-option>
 
-                </mat-option>
+                    <mat-option value="Bar Chart">
+                        Bar Chart
+                    </mat-option>
 
-            </mat-select>
+                    <mat-option value="Pie Chart">
+                        Pie Chart
+                    </mat-option>
 
-            <mat-icon matSuffix>
+                </mat-select>
 
-                insert_chart
+                <mat-icon matSuffix>
+                    insert_chart
+                </mat-icon>
 
-            </mat-icon>
+                @if (form.get('chartType')?.hasError('required') &&
+                     form.get('chartType')?.touched) {
 
-        </mat-form-field>
+                    <mat-error>
+                        Please select a chart type.
+                    </mat-error>
 
+                }
 
+            </mat-form-field>
 
+            
 
-        <mat-form-field
-            appearance="outline"
-            class="dialog-field">
+            <mat-form-field appearance="outline" class="dialog-field">
 
-            <mat-label>
+                <mat-label>Dashboard</mat-label>
 
-                Dashboard
+                <mat-select formControlName="dashboardId">
 
-            </mat-label>
+                    <mat-option
+                        *ngFor="let dashboard of dashboards"
+                        [value]="dashboard.id">
 
-            <mat-select [(value)]="dashboardId">
+                        {{ dashboard.name }}
 
-                <mat-option
-                    *ngFor="let dashboard of dashboards"
-                    [value]="dashboard.id">
+                    </mat-option>
 
-                    {{ dashboard.name }}
+                </mat-select>
 
-                </mat-option>
+                <mat-icon matSuffix>
+                    dashboard
+                </mat-icon>
 
-            </mat-select>
+                @if (form.get('dashboardId')?.hasError('required') &&
+                     form.get('dashboardId')?.touched) {
 
-            <mat-icon matSuffix>
+                    <mat-error>
+                        Please select a dashboard.
+                    </mat-error>
 
-                dashboard
+                }
 
-            </mat-icon>
+            </mat-form-field>
 
-        </mat-form-field>
+        </form>
 
     </mat-dialog-content>
-
-    
 
     <mat-dialog-actions class="dialog-actions">
 
         <button
             mat-stroked-button
             class="cancel-btn"
+            type="button"
             (click)="cancel()">
 
             Cancel
@@ -138,12 +130,11 @@
             mat-raised-button
             color="primary"
             class="save-btn"
+            type="button"
             (click)="save()">
 
             <mat-icon>
-
                 {{ isEditMode ? 'save' : 'add' }}
-
             </mat-icon>
 
             {{ isEditMode ? 'Update' : 'Create' }}

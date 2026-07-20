@@ -1,34 +1,34 @@
-:host{
-    display:block;
-    width:100%;
-    height:100%;
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-.layout{
-    display:flex;
-    height:100%;
-    width:100%;
-    background:#f5f7fb;
+.layout {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #f5f7fb;
 }
 
-.sidebar{
+.sidebar {
 
-    width:320px;
-    min-width:320px;
-    max-width:320px;
+    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
 
-    border-right:1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
 
-    background:#ffffff;
+    background: #ffffff;
 }
 
-.content{
+.content {
 
-    flex:1;
+    flex: 1;
 
-    padding:24px;
+    padding: 24px;
 
-    overflow:auto;
+    overflow: auto;
 
-    background:#f5f7fb;
+    background: #f5f7fb;
 }

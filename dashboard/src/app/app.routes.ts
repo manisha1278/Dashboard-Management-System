@@ -9,7 +9,7 @@ import { guestGuard } from './guards/guest-guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: LoginPageComponent ,canActivate: [guestGuard]},
+    { path: 'login', component: LoginPageComponent, canActivate: [guestGuard] },
     {
         path: '',
         component: MainLayoutComponent,

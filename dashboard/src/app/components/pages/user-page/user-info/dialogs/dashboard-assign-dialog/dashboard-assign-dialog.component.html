@@ -8,17 +8,13 @@
 
     @for(dashboard of data.dashboards; track dashboard.dashboardId){
 
-        <mat-checkbox
+    <mat-checkbox [checked]="isSelected(dashboard.dashboardId)" (change)="toggle(dashboard.dashboardId,$event.checked)">
 
-            [checked]="isSelected(dashboard.dashboardId)"
+        {{ dashboard.dashboardName }}
 
-            (change)="toggle(dashboard.dashboardId,$event.checked)">
+    </mat-checkbox>
 
-            {{ dashboard.dashboardName }}
-
-        </mat-checkbox>
-
-        <br>
+    <br>
 
     }
 
@@ -26,21 +22,16 @@
 
 <mat-dialog-actions align="end">
 
-<button
-    mat-button
-    (click)="cancel()">
+    <button mat-button (click)="cancel()">
 
-    Cancel
+        Cancel
 
-</button>
+    </button>
 
-<button
-    mat-raised-button
-    color="primary"
-    (click)="save()">
+    <button mat-raised-button color="primary" (click)="save()">
 
-    Save
+        Save
 
-</button>
+    </button>
 
 </mat-dialog-actions>

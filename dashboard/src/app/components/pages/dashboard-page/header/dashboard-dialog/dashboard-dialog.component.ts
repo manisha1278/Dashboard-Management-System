@@ -4,38 +4,44 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dashboard-dialog',
   imports: [MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,FormsModule,MatIconModule],
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule],
   templateUrl: './dashboard-dialog.component.html',
   styleUrl: './dashboard-dialog.component.css',
 })
 
 export class DashboardDialogComponent {
 
-  dashboardName = '';
+  readonly form: FormGroup;
 
   constructor(
+    private fb:FormBuilder,
     private dialogRef: MatDialogRef<DashboardDialogComponent>
-  ) {}
-
-  save() {
-     console.log('Save clicked');
-     const name = this.dashboardName.trim();
-
-  if (!name) {
-    return;
+  ) {
+    this.form = this.fb.group({
+      dashboardName: ['', Validators.required]
+    });
   }
 
-  console.log('Closing dialog');
-  this.dialogRef.close(name);
-
-   
+  save():void {
+    if(this.form.invalid){
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.dialogRef.close(this.form.value.dashboardName.trim());
   }
 
   cancel() {
